@@ -29,78 +29,8 @@
 #  THE POSSIBILITY OF SUCH DAMAGE.                                           #
 ##############################################################################
 
-all:
+LIBS = lib
 
-LDFLAGS += -Wl,--warn-common
+lib_SOURCES = str.c buffer.c common.c epoll.c server.c
 
-include mk/cflags.mk
-include mk/tc.mk
-
-CFLAGS += --std=gnu99 -D_GNU_SOURCE
-prefix ?= /usr/local
-
-PROGRAMS = postlicyd pfix-srsd
-LIBS     = lib
-TESTS    = tst-rbl
-
-GENERATED = tokens.h tokens.c
-
-lib_SOURCES = str.c buffer.c common.c epoll.c server.c $(GENERATED)
-
-postlicyd_SOURCES = greylist.c rbl.c main-postlicyd.c lib.a
-postlicyd_LIBADD  = $(TC_LIBS)
-
-pfix-srsd_SOURCES = main-srsd.c lib.a
-pfix-srsd_LIBADD  = -lsrs2
-
-tst-rbl_SOURCES = tst-rbl.c
-
-install: all
-	install -d $(DESTDIR)$(prefix)/sbin
-	install $(PROGRAMS) $(DESTDIR)$(prefix)/sbin
-	install -d $(DESTDIR)/etc/pfixtools
-
-# RULES ###################################################################{{{
-
-all: $(GENERATED) $(PROGRAMS) | $(GENERATED)
-
-clean:
-	$(RM) $(LIBS:=.a) $(PROGRAMS) $(TESTS) .*.o .*.dep
-
-distclean: clean
-	$(RM) $(GENERATED)
-
-tags: .tags
-.tags: $(shell git ls-files | egrep '\.[hc]$$')
-	ctags -o $@ $^
-
-headers: HEADACHEOPTS=-c mk/headache.cfg -h mk/COPYING
-headers:
-	@which headache > /dev/null || \
-		( echo "package headache not installed" ; exit 1 )
-	@git ls-files | egrep '(\.h|\.c|Makefile|*\.mk)$$' | xargs -t headache $(HEADACHEOPTS)
-
-%.h: %.sh
-	./$< $@ || ($(RM) $@; exit 1)
-
-%.c: %.sh
-	./$< $@ || ($(RM) $@; exit 1)
-
-.%.o: %.c Makefile
-	$(shell test -d $(@D) || mkdir -p $(@D))
-	$(CC) $(CFLAGS) -MMD -MT ".$*.dep $@" -MF .$*.dep -g -c -o $@ $<
-
-.%.dep: .%.o
-
-.SECONDEXPANSION:
-
-$(LIBS:=.a): $$(patsubst %.c,.%.o,$$($$(patsubst %.a,%,$$@)_SOURCES)) Makefile
-	$(RM) $@
-	$(AR) rcs $@ $(filter %.o,$^)
-
-$(PROGRAMS) $(TESTS): $$(patsubst %.c,.%.o,$$($$@_SOURCES)) Makefile common.ld
-	$(CC) -o $@ $(filter %.ld,$^) $(filter %.o,$^) $(LDFLAGS) $($@_LIBADD) $(filter %.a,$^)
-
--include $(foreach p,$(PROGRAMS) $(TESTS),$(patsubst %.c,.%.dep,$(filter %.c,$($p_SOURCES))))
-
-###########################################################################}}}
+include ../mk/common.mk
