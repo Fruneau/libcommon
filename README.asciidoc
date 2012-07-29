@@ -1,0 +1,32 @@
+libcommon
+=========
+
+Set of C tools designed to simplify the development of C programs. This
+includes:
+
+* memory allocation
+* string manipulation
+* dynamic arrays
+* networking (client & server)
+
+This lib has been extracted from the link:/Fruneau/pfixtools[+pfixtools+]
+project in order to be usable by other projects.
+
+Requirements
+------------
+
+In order to build the library, you'll need the following dependencies:
+
+* http://software.schmorp.de/pkg/libev.html[libev]
+* http://www.pcre.org/[libpcre]
+
+
+Legal
+-----
+
+These programs are free softwares distributed AS IS. Please refer to the link:LICENSE[LICENSE file] for details.
+
+Authors:
+
+* link:/MadCoder[Pierre Habouzit] (c) 2006-2009
+* link:/Fruneau[Florent Bruneau] (c) 2008-2010
