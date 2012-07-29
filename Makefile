@@ -41,4 +41,4 @@ all:
 
 .server.o: CFLAGS=$(if $(DARWIN),$(filter-out -Wredundant-decls,$(filter-out -Wshadow,$(CFLAGSBASE))),$(CFLAGSBASE)) -fno-strict-aliasing
 
-include ../mk/common.mk
+include mk/common.mk

@@ -1,0 +1,10 @@
+*_tokens.[hc]
+
+*.xml
+*.html
+*.[1-9]
+
+*.[ao]
+.tags
+.*.dep
+.*.swp
