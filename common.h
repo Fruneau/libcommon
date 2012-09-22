@@ -61,7 +61,7 @@
 
 #include "mem.h"
 
-#define PFIXTOOLS_VERSION "0.8"
+#define PFIXTOOLS_VERSION "0.9"
 
 #define __tostr(x)  #x
 #define STR(x)      __tostr(x)
