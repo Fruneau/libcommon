@@ -118,10 +118,10 @@ $(LIBS:=.a): $$(patsubst %.c,.%.o,$$($$(patsubst %.a,%,$$@)_SOURCES)) Makefile
 	$(AR) rcs $@ $(filter %.o,$^)
 
 $(TESTPROGAMS): %: .$$(subst tst-,,%).o ../postlicyd/libpostlicyd.a ../common/lib.a Makefile
-	$(CC) -o $@ $(filter %.o,$^) $(LDFLAGS) $(TESTLIBS) $(filter %.a,$^)
+	$(CC) $(LDFLAGS) -o $@ $(filter %.o,$^) $(filter %.a,$^) $(TESTLIBS)
 
 $(PROGRAMS): $$(patsubst %.c,.%.o,$$($$@_SOURCES)) Makefile
-	$(CC) -o $@ $(filter %.o,$^) $(LDFLAGS) $($@_LIBADD) $(filter %.a,$^)
+	$(CC) $(LDFLAGS) -o $@ $(filter %.o,$^) $(filter %.a,$^) $($@_LIBADD)
 
 $(DOCS):
 
