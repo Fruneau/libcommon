@@ -213,16 +213,24 @@ int drop_privileges(const char *user, const char *group)
             gr = getgrnam(group);
             if (!gr)
                 return -1;
-            setgid(gr->gr_gid);
+            if (setgid(gr->gr_gid))
+                return -1;
         }
 
         pw = getpwnam(user);
         if (!pw)
             return -1;
         if (!group) {
-            setgid(pw->pw_gid);
+            if (setgid(pw->pw_gid))
+                return -1;
         }
-        setuid(pw->pw_uid);
+        
+        // Reinit groups
+        if (initgroups(user, getgid()))
+            return -1;
+        
+        if (setuid(pw->pw_uid))
+            return -1;
     }
 
     return 0;
