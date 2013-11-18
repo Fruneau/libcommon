@@ -225,7 +225,9 @@ int drop_privileges(const char *user, const char *group)
                 return -1;
         }
         
-        // Reinit groups
+        // Reinit groups to make sure we don't keep root in secondary groups (when run as root)
+        // And also to ensure we pick up secondary groups of whatever user we changed to
+        // Must be done before we setuid or we may fail with EPERM
         if (initgroups(user, getgid()))
             return -1;
         
