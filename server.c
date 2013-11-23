@@ -331,7 +331,28 @@ listener_t *start_listener(int port)
     return tmp;
 }
 
+listener_t *start_listener_unix(const char *socketfile)
+{
+    struct sockaddr_un addr = {
+        .sun_family = AF_UNIX,
+    };
+    strncpy(addr.sun_path, socketfile, 107);
+    addr.sun_path[107] = 0;
+    listener_t *tmp;
+    int sock;
 
+    sock = tcp_listen_nonblock((const struct sockaddr *)&addr, sizeof(addr));
+    if (sock < 0) {
+        return NULL;
+    }
+
+    tmp             = listener_new();
+    tmp->io.fd      = sock;
+    ev_io_init(&tmp->io.io, listener_cb, tmp->io.fd, EV_READ);
+    ev_io_start(_G.loop, &tmp->io.io);
+    array_add(_G.listeners, tmp);
+    return tmp;
+}
 
 /* Timers
  */

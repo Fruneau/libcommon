@@ -58,6 +58,7 @@ typedef bool  (*refresh_f)(void*);
 
 
 listener_t *start_listener(int port);
+listener_t *start_listener_unix(const char *socketfile);
 
 client_t *client_register(int fd, run_client_f runner, void *data);
 void client_delete(client_t **client);

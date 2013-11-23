@@ -54,6 +54,7 @@
 #include <stdlib.h>
 #include <syslog.h>
 #include <sys/socket.h>
+#include <sys/un.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
@@ -62,6 +63,14 @@
 #include "mem.h"
 
 #define PFIXTOOLS_VERSION "0.9"
+
+// So we can override these when compiling
+#ifndef NOBODY_USER
+    #define NOBODY_USER "nobody"
+#endif
+#ifndef NOGROUP_GROUP
+    #define NOGROUP_GROUP "nogroup"
+#endif
 
 #define __tostr(x)  #x
 #define STR(x)      __tostr(x)
@@ -193,9 +202,11 @@ static inline void common_startup(void)
     COMMON_OPTION_LIST,                                                      \
     { "unsafe", no_argument, NULL, 'u' },                                    \
     { "foreground", no_argument, NULL, 'f' },                                \
-    { "pid-file", required_argument, NULL, 'p' }
+    { "pid-file", required_argument, NULL, 'p' },                            \
+    { "user", required_argument, NULL, 'U' },                                \
+    { "group", required_argument, NULL, 'G' }                                \
 
-#define COMMON_DAEMON_OPTION_SHORTLIST COMMON_OPTION_SHORTLIST "ufp:"
+#define COMMON_DAEMON_OPTION_SHORTLIST COMMON_OPTION_SHORTLIST "ufp:U:G:"
 
 #define COMMON_DAEMON_OPTION_CASES                                           \
   case 'f':                                                                  \
@@ -208,16 +219,28 @@ static inline void common_startup(void)
   case 'u':                                                                  \
     unsafe = true;                                                           \
     break;                                                                   \
+  case 'U':                                                                  \
+    user = optarg;                                                           \
+    break;                                                                   \
+  case 'G':                                                                  \
+    group = optarg;                                                          \
+    break;                                                                   \
   COMMON_OPTION_CASES
 
 #define COMMON_DAEMON_OPTION_PARAMS                                          \
     bool unsafe = false;                                                     \
     const char *pidfile = NULL;                                              \
-    bool daemonize = true;
+    bool daemonize = true;                                                   \
+    const char *user = NULL;                                                 \
+    const char *group = NULL;
 
 #define COMMON_DAEMON_OPTION_HELP                                            \
     "    -p|--pid-file <pidfile>       file to write our pid to\n"           \
     "    -u|--unsafe                   unsafe mode (don't drop privileges)\n"\
+    "    -U|--user                     run as user, default is "             \
+                                       NOBODY_USER "\n"                      \
+    "    -G|--group                    run as group, default is "            \
+                                       NOGROUP_GROUP "\n"                    \
     "    -f|--foreground               stay in foreground\n"                 \
     COMMON_OPTION_HELP
 #endif
