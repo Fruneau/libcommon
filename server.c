@@ -333,6 +333,8 @@ listener_t *start_listener(int port)
 
 listener_t *start_listener_unix(const char *socketfile)
 {
+	unlink(socketfile);
+
     struct sockaddr_un addr = {
         .sun_family = AF_UNIX,
     };
@@ -341,7 +343,10 @@ listener_t *start_listener_unix(const char *socketfile)
     listener_t *tmp;
     int sock;
 
+	mode_t old = umask(0111);
     sock = tcp_listen_nonblock((const struct sockaddr *)&addr, sizeof(addr));
+	umask(old);
+
     if (sock < 0) {
         return NULL;
     }
