@@ -308,7 +308,7 @@ static void listener_cb(EV_P_ struct ev_io *w, int events)
     ev_io_start(_G.loop, &tmp->io.io);
 }
 
-listener_t *start_listener(int port)
+listener_t *start_tcp_listener(int port)
 {
     struct sockaddr_in addr = {
         .sin_family = AF_INET,
@@ -331,10 +331,8 @@ listener_t *start_listener(int port)
     return tmp;
 }
 
-listener_t *start_listener_unix(const char *socketfile)
+listener_t *start_unix_listener(const char *socketfile)
 {
-	unlink(socketfile);
-
     struct sockaddr_un addr = {
         .sun_family = AF_UNIX,
     };
@@ -343,9 +341,11 @@ listener_t *start_listener_unix(const char *socketfile)
     listener_t *tmp;
     int sock;
 
-	mode_t old = umask(0111);
+    unlink(socketfile);
+
+    mode_t old = umask(0111);
     sock = tcp_listen_nonblock((const struct sockaddr *)&addr, sizeof(addr));
-	umask(old);
+    umask(old);
 
     if (sock < 0) {
         return NULL;

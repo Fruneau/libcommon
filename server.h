@@ -57,8 +57,8 @@ typedef void  (*run_timeout_f)(void*);
 typedef bool  (*refresh_f)(void*);
 
 
-listener_t *start_listener(int port);
-listener_t *start_listener_unix(const char *socketfile);
+listener_t *start_tcp_listener(int port);
+listener_t *start_unix_listener(const char *socketfile);
 
 client_t *client_register(int fd, run_client_f runner, void *data);
 void client_delete(client_t **client);
