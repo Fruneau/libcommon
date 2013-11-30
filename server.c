@@ -339,7 +339,7 @@ listener_t *start_unix_listener(const char *socketfile)
     };
     listener_t *tmp;
     int sock;
-    mode_t old
+    mode_t old;
 
     unlink(socketfile);
 
