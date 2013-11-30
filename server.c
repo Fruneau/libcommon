@@ -319,6 +319,7 @@ listener_t *start_tcp_listener(int port)
 
     addr.sin_port = htons(port);
     sock = tcp_listen_nonblock((const struct sockaddr *)&addr, sizeof(addr));
+
     if (sock < 0) {
         return NULL;
     }
@@ -336,14 +337,15 @@ listener_t *start_unix_listener(const char *socketfile)
     struct sockaddr_un addr = {
         .sun_family = AF_UNIX,
     };
-    strncpy(addr.sun_path, socketfile, 107);
-    addr.sun_path[107] = 0;
     listener_t *tmp;
     int sock;
+    mode_t old
 
     unlink(socketfile);
 
-    mode_t old = umask(0111);
+    old = umask(0111);
+    strncpy(addr.sun_path, socketfile, 107);
+    addr.sun_path[107] = 0;
     sock = tcp_listen_nonblock((const struct sockaddr *)&addr, sizeof(addr));
     umask(old);
 
