@@ -308,7 +308,7 @@ static void listener_cb(EV_P_ struct ev_io *w, int events)
     ev_io_start(_G.loop, &tmp->io.io);
 }
 
-listener_t *start_listener(int port)
+listener_t *start_tcp_listener(int port)
 {
     struct sockaddr_in addr = {
         .sin_family = AF_INET,
@@ -319,6 +319,7 @@ listener_t *start_listener(int port)
 
     addr.sin_port = htons(port);
     sock = tcp_listen_nonblock((const struct sockaddr *)&addr, sizeof(addr));
+
     if (sock < 0) {
         return NULL;
     }
@@ -331,7 +332,34 @@ listener_t *start_listener(int port)
     return tmp;
 }
 
+listener_t *start_unix_listener(const char *socketfile)
+{
+    struct sockaddr_un addr = {
+        .sun_family = AF_UNIX,
+    };
+    listener_t *tmp;
+    int sock;
+    mode_t old;
 
+    unlink(socketfile);
+
+    old = umask(0111);
+    strncpy(addr.sun_path, socketfile, 107);
+    addr.sun_path[107] = 0;
+    sock = tcp_listen_nonblock((const struct sockaddr *)&addr, sizeof(addr));
+    umask(old);
+
+    if (sock < 0) {
+        return NULL;
+    }
+
+    tmp             = listener_new();
+    tmp->io.fd      = sock;
+    ev_io_init(&tmp->io.io, listener_cb, tmp->io.fd, EV_READ);
+    ev_io_start(_G.loop, &tmp->io.io);
+    array_add(_G.listeners, tmp);
+    return tmp;
+}
 
 /* Timers
  */

@@ -122,6 +122,14 @@ static inline void *xmalloc(ssize_t size) {
     return mem;
 }
 
+static inline void *xmalloc_unsigned(size_t size) {
+    void *mem;
+    mem = calloc(size, 1);
+    if (!mem)
+        abort();
+    return mem;
+}
+
 static inline void xmemfree(void **ptr) {
     p_delete(ptr);
 }
@@ -134,6 +142,13 @@ static inline void xrealloc(void **ptr, ssize_t newsize) {
         if (!*ptr)
             abort();
     }
+}
+
+static inline void *xrealloc_unsigned(void *ptr, size_t newsize) {
+    ptr = realloc(ptr, newsize);
+    if (!ptr)
+        abort();
+    return ptr;
 }
 
 static inline void *xmemset(void* dst, int c, ssize_t n) {
