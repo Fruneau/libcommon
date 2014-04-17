@@ -39,6 +39,7 @@ include $(__DIR__)/cflags.mk
 
 prefix      ?= /usr/local
 LDFLAGSBASE += $(if $(DARWIN),,-Wl,-warn-common)
+LDFLAGSBASE += $(if $(FREEBSD),-L/usr/local/lib)
 CFLAGSBASE  += --std=gnu99 -I../ -I../common
 ASCIIDOC     = asciidoc -f $(__DIR__)/asciidoc.conf -d manpage \
 	       -apft_version=$(shell git describe)

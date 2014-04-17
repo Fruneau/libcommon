@@ -43,6 +43,9 @@ endif
 ifneq ($(filter Darwin%,$(shell uname)),)
   DARWIN=1
 endif
+ifneq ($(filter FreeBSD%,$(shell uname)),)
+  FREEBSD=1
+endif
 
 # Use pipes and not temp files.
 CFLAGSBASE += -pipe
@@ -98,6 +101,8 @@ CFLAGSBASE += -Wsequence-point
 CFLAGSBASE += -Wparentheses
 # warn about missing declarations
 CFLAGSBASE += -Wmissing-declarations
+# ports include directory for FreeBSD
+CFLAGSBASE += $(if $(FREEBSD),-I/usr/local/include)
 
 CFLAGS=$(CFLAGSBASE)
 LDFLAGS=$(LDFLAGSBASE)
