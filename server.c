@@ -344,8 +344,13 @@ listener_t *start_unix_listener(const char *socketfile)
     unlink(socketfile);
 
     old = umask(0111);
+#ifdef __FreeBSD__
+    strncpy(addr.sun_path, socketfile, 103);
+    addr.sun_path[103] = 0;
+#else
     strncpy(addr.sun_path, socketfile, 107);
     addr.sun_path[107] = 0;
+#endif
     sock = tcp_listen_nonblock((const struct sockaddr *)&addr, sizeof(addr));
     umask(old);
 
