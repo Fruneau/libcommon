@@ -56,11 +56,13 @@
  */
 #define PARRAY(Type)                                                         \
     typedef PRIV_ARRAY(Type*) PA(Type);                                      \
+    __attribute__((unused))                                                  \
     static inline PA(Type) *PA_NEW(Type)(void)                               \
     {                                                                        \
         return p_new(PA(Type), 1);                                           \
     }                                                                        \
                                                                              \
+    __attribute__((unused))                                                  \
     static inline void PA_DELETE(Type)(PA(Type) **array)                     \
     {                                                                        \
         if (*array) {                                                        \
@@ -77,11 +79,13 @@
 #define ARRAY(Type)                                                          \
     typedef PRIV_ARRAY(Type) A(Type);                                        \
                                                                              \
+    __attribute__((unused))                                                  \
     static inline A(Type) *A_NEW(Type)(void)                                 \
     {                                                                        \
         return p_new(A(Type), 1);                                            \
     }                                                                        \
                                                                              \
+    __attribute__((unused))                                                  \
     static inline void A_DELETE(Type)(A(Type) **array)                       \
     {                                                                        \
         if (*array) {                                                        \
