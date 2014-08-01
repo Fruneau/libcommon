@@ -33,17 +33,13 @@
 /*   see AUTHORS and source files for details                               */
 /****************************************************************************/
 
-/*
- * Copyright © 2006 Pierre Habouzit
- */
-
 #ifndef PFIXTOOLS_STR_H
 #define PFIXTOOLS_STR_H
 
 #include <stdbool.h>
 #include "mem.h"
 
-/** \defgroup mutt_strings Madmutt string API
+/** \defgroup mutt_strings String API
  *
  * This module contains the prefered string API to be used in Madmutt.
  *

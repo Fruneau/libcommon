@@ -33,11 +33,6 @@
 /*   see AUTHORS and source files for details                               */
 /****************************************************************************/
 
-/*
- * Copyright © 2007 Pierre Habouzit
- * Copyright © 2008 Florent Bruneau
- */
-
 #ifndef PFIXTOOLS_COMMON_H
 #define PFIXTOOLS_COMMON_H
 

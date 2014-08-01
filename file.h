@@ -33,10 +33,6 @@
 /*   see AUTHORS and source files for details                               */
 /****************************************************************************/
 
-/*
- * Copyright © 2008 Florent Bruneau
- */
-
 #ifndef PFIXTOOLS_FILE_H
 #define PFIXTOOLS_FILE_H
 

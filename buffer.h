@@ -33,10 +33,6 @@
 /*   see AUTHORS and source files for details                               */
 /****************************************************************************/
 
-/*
- * Copyright © 2006-2007 Pierre Habouzit
- */
-
 #ifndef PFIXTOOLS_BUFFER_H
 #define PFIXTOOLS_BUFFER_H
 

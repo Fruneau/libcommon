@@ -33,10 +33,6 @@
 /*   see AUTHORS and source files for details                               */
 /****************************************************************************/
 
-/*
- * Copyright © 2006-2007 Pierre Habouzit
- */
-
 #include <errno.h>
 #include <stdio.h>
 #include <unistd.h>

@@ -33,10 +33,6 @@
 /*   see AUTHORS and source files for details                               */
 /****************************************************************************/
 
-/*
- * Copyright © 2009 Florent Bruneau
- */
-
 #include "regexp.h"
 
 regexp_t *regexp_new(void)

@@ -33,16 +33,11 @@
 /*   see AUTHORS and source files for details                               */
 /****************************************************************************/
 
-/*
- * Copyright © 2006 Pierre Habouzit
- */
-
 /** \addtogroup mutt_strings */
 /*@{*/
 
 /** \file str.c
- * \brief Madmutt string API module implementation.
- * \author Pierre Habouzit <madcoder@debian.org>
+ * \brief String API module implementation.
  */
 
 #include "str.h"
