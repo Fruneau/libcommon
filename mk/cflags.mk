@@ -47,6 +47,11 @@ ifneq ($(filter FreeBSD%,$(shell uname)),)
   FREEBSD=1
 endif
 
+ifneq ($(sanitize),)
+  CC=clang
+  CFLAGBASE += -fsanitize=$(sanitize)
+endif
+
 # Use pipes and not temp files.
 CFLAGSBASE += -pipe
 # optimize even more
