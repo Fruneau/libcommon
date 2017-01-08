@@ -337,8 +337,6 @@ listener_t *start_unix_listener(const char *socketfile)
     int sock;
     mode_t old;
 
-    unlink(socketfile);
-
     old = umask(0111);
     strncpy(addr.sun_path, socketfile, sizeof(addr.sun_path) - 1);
     addr.sun_path[sizeof(addr.sun_path) - 1] = 0;

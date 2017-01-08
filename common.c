@@ -90,6 +90,7 @@ int tcp_bind(const struct sockaddr *addr, socklen_t len)
         break;
       default:
         errno = EINVAL;
+        UNIXERR("addr");
         return -1;
     }
 
@@ -119,7 +120,10 @@ int tcp_bind(const struct sockaddr *addr, socklen_t len)
 int tcp_listen(const struct sockaddr *addr, socklen_t len)
 {
     int sock = tcp_bind(addr, len);
-    if (listen(sock, 0) < 0) {
+    if (sock < 0) {
+        return -1;
+    }
+    if (listen(sock, SOMAXCONN) < 0) {
         UNIXERR("bind");
         close(sock);
         return -1;
@@ -130,11 +134,14 @@ int tcp_listen(const struct sockaddr *addr, socklen_t len)
 int tcp_listen_nonblock(const struct sockaddr *addr, socklen_t len)
 {
     int sock = tcp_bind(addr, len);
+    if (sock < 0) {
+        return -1;
+    }
     if (setnonblock(sock)) {
         close(sock);
         return -1;
     }
-    if (listen(sock, 0) < 0) {
+    if (listen(sock, SOMAXCONN) < 0) {
         UNIXERR("bind");
         close(sock);
         return -1;
