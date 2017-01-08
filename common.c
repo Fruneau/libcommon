@@ -123,7 +123,7 @@ int tcp_listen(const struct sockaddr *addr, socklen_t len)
     if (sock < 0) {
         return -1;
     }
-    if (listen(sock, 0) < 0) {
+    if (listen(sock, SOMAXCONN) < 0) {
         UNIXERR("bind");
         close(sock);
         return -1;
@@ -141,7 +141,7 @@ int tcp_listen_nonblock(const struct sockaddr *addr, socklen_t len)
         close(sock);
         return -1;
     }
-    if (listen(sock, 0) < 0) {
+    if (listen(sock, SOMAXCONN) < 0) {
         UNIXERR("bind");
         close(sock);
         return -1;
